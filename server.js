@@ -3,9 +3,11 @@ const express = require("express");
 const cors = require("cors");
 
 const logger = require("./middleware/logger");
+const connectToDb = require("./db");
 const itemsRouter = require("./routes/items");
 
 dotenv.config({ path: "./.env" }); // Load config
+connectToDb(); // db connection
 
 const app = express();
 
