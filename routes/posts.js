@@ -1,16 +1,16 @@
 const router = require("express").Router();
-const Item = require("../models/item.model");
+const Post = require("../models/post.model");
 
 // Create
 router.route("/add").post(async (req, res) => {
-  const name = req.body.name;
-  const description = req.body.description;
+  const title = req.body.title;
+  const content = req.body.content;
 
-  const newItem = new Item({ name, description });
+  const newPost = new Post({ title, content });
 
   try {
-    await newItem.save();
-    res.json({ msg: "New item added!" });
+    await newPost.save();
+    res.json({ msg: "New post added!" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server-side error." });
@@ -20,8 +20,8 @@ router.route("/add").post(async (req, res) => {
 // Get All
 router.route("/").get(async (req, res) => {
   try {
-    const items = await Item.find();
-    res.json(items);
+    const posts = await Post.find();
+    res.json(posts);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server-side error." });
@@ -31,12 +31,12 @@ router.route("/").get(async (req, res) => {
 // Get by Id
 router.route("/:id").get(async (req, res) => {
   try {
-    const item = await Item.findById(req.params.id);
+    const post = await Post.findById(req.params.id);
 
-    if (!item) {
+    if (!post) {
       res.status(400).json({ error: "Doesn't exist." });
     } else {
-      res.json(item);
+      res.json(post);
     }
   } catch (error) {
     console.log(error);
@@ -46,19 +46,19 @@ router.route("/:id").get(async (req, res) => {
 
 // Update
 router.route("/update/:id").post(async (req, res) => {
-  const name = req.body.name;
-  const description = req.body.description;
+  const title = req.body.title;
+  const content = req.body.content;
 
   try {
-    const item = await Item.findById(req.params.id);
+    const post = await Post.findById(req.params.id);
 
-    if (!item) {
+    if (!post) {
       res.status(400).json({ error: "Doesn't exist." });
     } else {
-      item.name = req.body.name;
-      item.description = req.body.description;
+      post.title = req.body.title;
+      post.content = req.body.content;
 
-      await item.save();
+      await post.save();
       res.json({ msg: "Updated." });
     }
   } catch (error) {
@@ -70,8 +70,8 @@ router.route("/update/:id").post(async (req, res) => {
 // Delete
 router.route("/:id").delete(async (req, res) => {
   try {
-    const item = await Item.findByIdAndDelete(req.params.id);
-    if (!item) {
+    const post = await Post.findByIdAndDelete(req.params.id);
+    if (!post) {
       res.status(400).json({ error: "Doesn't exist." });
     } else {
       res.json({ msg: "Deleted." });

@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const logger = require("./middleware/logger");
 const connectToDb = require("./db");
-const itemsRouter = require("./routes/items");
+const postsRouter = require("./routes/posts");
 
 dotenv.config({ path: "./.env" }); // Load config
 connectToDb(); // db connection
@@ -19,7 +19,7 @@ app.use(logger); // Init logger
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/items", itemsRouter);
+app.use("/posts", postsRouter);
 
 //#endregion
 
